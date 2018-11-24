@@ -1,3 +1,3 @@
 # scraper
-TIme series scraper
+Time series scraper
 test
