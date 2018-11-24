@@ -1,6 +1,6 @@
 # Alpha Vantage
 
-import json, requests, matplotlib.pyplot as plt
+import json, requests, matplotlib.pyplot as plt, csv
 from datetime import datetime
 
 # https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=demo
@@ -19,11 +19,14 @@ response.raise_for_status()
 data = json.loads(response.text)
 
 series = data['Time Series (Daily)']
+outputFile = open('output.csv', 'w', newline='')
+outputWriter = csv.writer(outputFile)
 
 close = {}
 for datestring, price in series.items():
     date = datetime.strptime(datestring, '%Y-%m-%d')
     close[date] = float(price['4. close'])
+    outputWriter.writerow([date, float(price['4. close'])])
 
 plt.plot(close.keys(), close.values())
 plt.show()
