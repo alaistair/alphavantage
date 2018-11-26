@@ -7,20 +7,20 @@ from datetime import datetime
 
 url = 'https://www.alphavantage.co/query?'
 function = 'TIME_SERIES_DAILY'
-symbol = 'ASX:APT'
+exchange = 'ASX'
+symbol = 'APT'
 outputsize = 'full'
 apikey = '9S5XM342IGZHSVD0'
 
 #urlfull = url + 'function=' + function + '&symbol=' + symbol + '&apikey=' + apikey
-urlfull = url + 'function=' + function + '&symbol=' + symbol + '&outputsize=' + outputsize + '&apikey=' + apikey
+urlfull = url + 'function=' + function + '&symbol=' + exchange + ':' + symbol + '&outputsize=' + outputsize + '&apikey=' + apikey
 
 response = requests.get(urlfull)
 response.raise_for_status()
-#data = json.loads(response.text)
 data = response.json()
 
 series = data['Time Series (Daily)']
-outputFile = open('output.csv', 'w', newline='')
+outputFile = open(symbol + '.csv', 'w', newline='')
 outputWriter = csv.writer(outputFile)
 
 close = {}
@@ -30,4 +30,5 @@ for datestring, price in series.items():
     outputWriter.writerow([date, float(price['4. close'])])
 
 plt.plot(close.keys(), close.values())
-plt.show()
+plt.show() # Atom
+plt.savefig(symbol + '.png') # Repl.it
