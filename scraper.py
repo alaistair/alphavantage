@@ -1,8 +1,10 @@
-# Alpha Vantage
+# Download data Alpha Vantage, save to CSV, and plot
+# Alaistair Chan
 
 import json, requests, matplotlib.pyplot as plt, csv
 from datetime import datetime
 
+# Example syntax
 # https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=demo
 
 url = 'https://www.alphavantage.co/query?'
@@ -11,8 +13,6 @@ exchange = 'ASX'
 symbol = 'APT'
 outputsize = 'full'
 apikey = '9S5XM342IGZHSVD0'
-
-#urlfull = url + 'function=' + function + '&symbol=' + symbol + '&apikey=' + apikey
 urlfull = url + 'function=' + function + '&symbol=' + exchange + ':' + symbol + '&outputsize=' + outputsize + '&apikey=' + apikey
 
 response = requests.get(urlfull)
@@ -30,5 +30,5 @@ for datestring, price in series.items():
     outputWriter.writerow([date, float(price['4. close'])])
 
 plt.plot(close.keys(), close.values())
-plt.show() # Atom
-plt.savefig(symbol + '.png') # Repl.it
+# plt.show() # Display in Atom
+plt.savefig(symbol + '.png') # Display in Repl.it
