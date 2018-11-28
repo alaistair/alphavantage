@@ -1,10 +1,9 @@
-# Download data Alpha Vantage, save to CSV, and plot
-# Alaistair Chan
+# Alpha Vantage
 
-import json, requests, matplotlib.pyplot as plt, csv
+import json, requests, csv
+import pygal
 from datetime import datetime
 
-# Example syntax
 # https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=demo
 
 url = 'https://www.alphavantage.co/query?'
@@ -13,6 +12,8 @@ exchange = 'ASX'
 symbol = 'APT'
 outputsize = 'full'
 apikey = '9S5XM342IGZHSVD0'
+
+#urlfull = url + 'function=' + function + '&symbol=' + symbol + '&apikey=' + apikey
 urlfull = url + 'function=' + function + '&symbol=' + exchange + ':' + symbol + '&outputsize=' + outputsize + '&apikey=' + apikey
 
 response = requests.get(urlfull)
@@ -29,6 +30,9 @@ for datestring, price in series.items():
     close[date] = float(price['4. close'])
     outputWriter.writerow([date, float(price['4. close'])])
 
-plt.plot(close.keys(), close.values())
-# plt.show() # Display in Atom
-plt.savefig(symbol + '.png') # Display in Repl.it
+# Graph data
+graph = pygal.Line()
+graph.title = symbol
+graph.add(symbol, close.values())
+
+graph.render()
