@@ -1,3 +1,1 @@
-# scraper
-Time series scraper
-test
+Quick program to get financial data from AlphaVantage
